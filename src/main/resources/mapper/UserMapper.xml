@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blank.mapper.UUserMapper">
+
+    <cache type="com.blank.mapper.cache.MybatisRedisCache" />
+
+    <sql id="base_column">
+        u_id,u_account,u_password,u_isLocked,u_faceImg,u_name,u_sex,u_phoneNo,u_address,u_position_id
+    </sql>
+
+    <sql id="update_value">
+        u_name=#{u_name},
+        u_phoneNo=#{u_phoneNo},
+        u_sex=#{u_sex},
+        u_address=#{u_address},
+        u_position_id=#{u_position_id},
+        u_isLocked=#{u_isLocked}
+    </sql>
+
+    <sql id="insert_column">
+        u_name,u_phoneNo,u_sex,u_address,u_account,u_password,u_position_id
+    </sql>
+
+    <sql id="insert_value">
+        #{u_name},#{u_phoneNo},#{u_sex},#{u_address},#{u_account},#{u_password},#{u_position_id}
+    </sql>
+
+    <sql id="where_name">
+        <if test="u_name != null">
+            <where>
+                d1.u_name like "%"#{u_name}"%"
+            </where>
+        </if>
+    </sql>
+
+    <resultMap id="userInfoMap" type="com.blank.dto.UserDto">
+        <id column="u_id" property="u_id"/>
+        <result column="u_account" property="u_account"/>
+        <result column="u_name" property="u_name"/>
+        <result column="u_sex" property="u_sex"/>
+        <result column="u_phoneNo" property="u_phoneNo"/>
+        <result column="u_address" property="u_address"/>
+        <result column="u_isLocked" property="u_isLocked"/>
+        <result column="u_faceImg" property="u_faceImg" />
+        <association property="userPosition" javaType="com.blank.entity.UserPosition">
+            <id column="u_position_id" property="id"/>
+            <result column="position" property="position"/>
+        </association>
+    </resultMap>
+
+    <select id="queryByUaccount" resultType="com.blank.entity.User">
+        select
+        <include refid="base_column"/>
+        from dc_user
+        where u_account=#{account}
+    </select>
+
+    <select id="searchByName" resultMap="userInfoMap">
+        select d1.*,d2.position from
+        dc_user d1 left join dc_user_position d2
+        on d1.u_position_id=d2.id
+        <include refid="where_name"/>
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*)
+        from dc_user
+        <include refid="where_name"/>
+    </select>
+
+    <update id="update">
+        update dc_user
+        set
+        <include refid="update_value"/>
+        where u_id=#{u_id}
+    </update>
+
+    <delete id="delById">
+        delete from
+        dc_user
+        where u_id=#{id}
+    </delete>
+
+    <insert id="addUser">
+        insert into
+        dc_user (<include refid="insert_column"/>)
+        values (<include refid="insert_value"/>)
+    </insert>
+
+    <update id="updatePassword">
+        update dc_user
+        set u_password=#{u_password}
+        where u_id=#{u_id}
+    </update>
+
+    <update id="updateImg">
+        update dc_user
+        set u_faceImg=#{url}
+        where u_id=#{id}
+    </update>
+</mapper>

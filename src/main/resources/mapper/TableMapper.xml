@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blank.mapper.TTableMapper">
+
+    <sql id="base_column">
+        dt_id,dt_table_number,dt_isUsing
+    </sql>
+
+    <select id="queryAll" resultType="com.blank.entity.Table">
+        select <include refid="base_column" />
+        from dc_table
+    </select>
+
+    <select id="queryIsUsed" resultType="java.lang.Integer">
+        select dt_isUsing
+        from dc_table
+        where dt_id=#{dt_id}
+    </select>
+
+    <select id="queryByNumber" resultType="com.blank.entity.Table">
+        select *
+        from dc_table
+        where dt_table_number=#{table_number}
+        limit 1
+    </select>
+
+    <insert id="addTable">
+        insert
+        into dc_table(dt_table_number)
+        values (#{table_number})
+    </insert>
+
+</mapper>

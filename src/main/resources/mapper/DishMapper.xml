@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blank.mapper.DDishMaper">
+
+    <cache type="com.blank.mapper.cache.MybatisRedisCache" />
+
+    <sql id="base_column">
+        d_id,d_name,d_description,d_txt,d_img,d_isGood,d_price
+    </sql>
+
+    <sql id="where_name">
+        <if test="d_name != null">
+            <where>
+                d_name like "%"#{d_name}"%"
+            </where>
+        </if>
+    </sql>
+
+    <sql id="insert_column">
+        d_name,d_price,d_isGood,d_description,d_txt
+    </sql>
+
+    <sql id="insert_value">
+        #{d_name},#{d_price},#{d_isGood},#{d_description},#{d_txt}
+    </sql>
+
+    <sql id="update_value">
+        d_name=#{d_name},
+        d_price=#{d_price},
+        d_isGood=#{d_isGood},
+        d_description=#{d_description},
+        d_txt=#{d_txt}
+    </sql>
+
+    <select id="getDishes" resultType="com.blank.entity.Dish">
+        select
+        <include refid="base_column"/>
+        from dc_dish
+        <include refid="where_name"/>
+    </select>
+
+    <select id="getAll" resultType="com.blank.entity.Dish">
+        select
+        <include refid="base_column"/>
+        from dc_dish
+    </select>
+    
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*)
+        from dc_dish
+        <include refid="where_name" />
+    </select>
+
+    <delete id="delById">
+        delete
+        from dc_dish
+        where d_id=#{id}
+    </delete>
+
+    <update id="updateDish">
+        update dc_dish
+        set
+        <include refid="update_value"/>
+        where d_id=#{d_id}
+    </update>
+
+    <update id="updateDishImg">
+        update dc_dish
+        set d_img=#{url}
+        where d_id=#{id}
+    </update>
+
+    <insert id="addDish">
+        insert
+        into dc_dish(<include refid="insert_column"/>)
+        values (<include refid="insert_value"/>)
+    </insert>
+</mapper>

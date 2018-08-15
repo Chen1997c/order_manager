@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blank.mapper.OOrderMapper">
+
+    <sql id="insert_column">
+        o_waiter_id,o_table_id
+    </sql>
+
+    <sql id="insert_value">
+        #{o_waiter_id},#{o_table_id}
+    </sql>
+
+    <insert id="addOrder" parameterType="com.blank.entity.Order"
+        useGeneratedKeys="true" keyProperty="o_id" keyColumn="o_id">
+        insert
+        into dc_order(<include refid="insert_column"/> )
+        values (<include refid="insert_value"/> )
+    </insert>
+
+</mapper>

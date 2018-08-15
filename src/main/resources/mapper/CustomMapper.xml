@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blank.mapper.CCustomMapper">
+
+    <cache type="com.blank.mapper.cache.MybatisRedisCache" />
+
+    <sql id="base_column">
+        c_id,c_name,c_sex,c_phoneNo,c_dinningTimes,c_dinningSum
+    </sql>
+
+    <sql id="where_name">
+        <if test="c_name != null">
+            <where>
+                c_name like "%"#{c_name}"%"
+            </where>
+        </if>
+    </sql>
+
+    <sql id="insert_column">
+        c_name,c_sex,c_phoneNo
+    </sql>
+
+    <sql id="insert_value">
+        #{c_name},#{c_sex},#{c_phoneNo}
+    </sql>
+
+    <sql id="update_value">
+        c_name=#{c_name},
+        c_sex=#{c_sex},
+        c_phoneNo=#{c_phoneNo},
+        c_dinningTimes=#{c_dinningTimes},
+        c_dinningSum=#{c_dinningSum}
+    </sql>
+
+    <select id="getCustoms" resultType="com.blank.entity.Custom">
+        select <include refid="base_column" />
+        from dc_custom
+        <include refid="where_name" />
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(*)
+        from dc_custom
+        <include refid="where_name"/>
+    </select>
+
+    <delete id="delById">
+        delete
+        from dc_custom
+        where c_id=#{id}
+    </delete>
+    
+    <insert id="addCustom">
+        insert
+        into dc_custom(<include refid="insert_column" /> )
+        values (<include refid="insert_value" /> )
+    </insert>
+
+    <update id="updateCustom">
+        update
+        dc_custom
+        set <include refid="update_value" />
+        where c_id=#{c_id}
+    </update>
+</mapper>

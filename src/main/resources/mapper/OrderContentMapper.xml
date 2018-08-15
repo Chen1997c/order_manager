@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blank.mapper.OOrderContentMapper">
+
+    <sql id="insert_column">
+        oc_dish_id,oc_dishNo,oc_order_id
+    </sql>
+
+    <sql id="insert_value">
+        #{oc_dish_id},#{oc_dishNo},#{oc_order_id}
+    </sql>
+
+    <insert id="addOrderContent">
+        insert
+        into dc_order_content(<include refid="insert_column"/>)
+        values (<include refid="insert_value"/>)
+    </insert>
+
+</mapper>
