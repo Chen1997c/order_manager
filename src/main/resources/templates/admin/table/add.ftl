@@ -9,7 +9,7 @@
                     <label>请输入餐桌编号</label>
                     <div class="am-form-group">
                         <input type="text" id="add-table-number" class="am-form am-input-sm am-form-field"
-                               pattern="^[1,9]\d|[1,9]$" required>
+                               pattern="^[1-9]|[1-9]\d$" required>
                     </div>
                     <div class="am-form-group am-text-right am-margin-top-lg">
                         <input type="submit" id="add-table-btn" class="am-btn am-btn-primary" value="提交">

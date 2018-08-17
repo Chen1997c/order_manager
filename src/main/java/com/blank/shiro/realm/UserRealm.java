@@ -7,6 +7,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
@@ -47,8 +48,8 @@ public class UserRealm extends AuthorizingRealm {
             throw new LockedAccountException();
         }
         //根据帐号来加盐
-//        ByteSource salt = ByteSource.Util.bytes(account);
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(account, user.getU_password(), getName());
+        ByteSource salt = ByteSource.Util.bytes(account);
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(account, user.getU_password(), salt,getName());
         return info;
     }
 }

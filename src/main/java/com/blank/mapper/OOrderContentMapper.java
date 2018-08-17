@@ -1,7 +1,10 @@
 package com.blank.mapper;
 
+import com.blank.dto.OrderContentDto;
 import com.blank.entity.OrderContent;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,14 @@ import org.apache.ibatis.annotations.Mapper;
 public interface OOrderContentMapper {
 
     Integer addOrderContent(OrderContent orderContent);
+
+    List<OrderContentDto> getUnCookOrder();
+
+    Integer setCookStateById(Integer oc_id);
+
+    Integer setPublishStateById(Integer oc_id);
+
+    Integer delById(Integer oc_id);
+
+    Integer delByOId(Integer o_id);
 }

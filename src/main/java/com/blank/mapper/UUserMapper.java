@@ -35,5 +35,5 @@ public interface UUserMapper{
 
     Integer updateImg(@Param("url") String url, @Param("id") Integer id);
 
-    Integer getCount(String u_name);
+    Integer getCount(@Param("u_name") String u_name);
 }

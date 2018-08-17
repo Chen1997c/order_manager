@@ -1,31 +1,27 @@
 package com.blank.controller;
 
-import com.blank.entity.User;
-import com.blank.service.UUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller
-public class BaseController {
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+/**
+ * <p>
+ *     功能描述:提供了一些公共的属性的抽象类
+ * </p>
+ *
+ * @author :Team Blank
+ * @since :2018.08.06
+ */
+public abstract class BaseController {
 
     @Autowired
-    private UUserService userService;
+    protected HttpServletRequest request;
 
+    @Autowired
+    protected HttpSession session;
 
-    @RequestMapping("/index.html")
-    public String index() {
-        return "public/index";
-    }
-
-    @RequestMapping("/update")
-    @ResponseBody
-    public String update() {
-        userService.update(new User());
-        return "success";
-    }
-
-
+    @Autowired
+    protected ServletContext context;
 }

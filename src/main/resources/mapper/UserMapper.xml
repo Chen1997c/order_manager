@@ -35,6 +35,14 @@
         </if>
     </sql>
 
+    <sql id="where_count_name">
+        <if test="u_name != null">
+            <where>
+                u_name like "%"#{u_name}"%"
+            </where>
+        </if>
+    </sql>
+
     <resultMap id="userInfoMap" type="com.blank.dto.UserDto">
         <id column="u_id" property="u_id"/>
         <result column="u_account" property="u_account"/>
@@ -67,7 +75,7 @@
     <select id="getCount" resultType="java.lang.Integer">
         select count(*)
         from dc_user
-        <include refid="where_name"/>
+        <include refid="where_count_name"/>
     </select>
 
     <update id="update">

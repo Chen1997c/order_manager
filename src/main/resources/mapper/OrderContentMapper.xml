@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blank.mapper.OOrderContentMapper">
 
+    <cache type="com.blank.mapper.cache.MybatisRedisCache" />
+
     <sql id="insert_column">
         oc_dish_id,oc_dishNo,oc_order_id
     </sql>
@@ -12,10 +14,49 @@
         #{oc_dish_id},#{oc_dishNo},#{oc_order_id}
     </sql>
 
+    <sql id="unCookOrder_column">
+         doc.oc_id,doc.oc_order_id,doc.oc_dishNo,do.o_table_id,doc.oc_state_id,dd.d_name
+    </sql>
+
     <insert id="addOrderContent">
         insert
         into dc_order_content(<include refid="insert_column"/>)
         values (<include refid="insert_value"/>)
     </insert>
+
+    <select id="getUnCookOrder" resultType="com.blank.dto.OrderContentDto">
+        select
+        <include refid="unCookOrder_column"/>
+        from dc_order_content doc
+        left join dc_order do
+        on doc.oc_order_id=do.o_id
+        left join dc_dish dd
+        on doc.oc_dish_id=dd.d_id
+        where doc.oc_state_id!=2
+        order by o_table_id asc
+    </select>
+
+    <update id="setCookStateById">
+        update dc_order_content
+        set oc_state_id=1
+        where oc_id=#{oc_id} and oc_state_id=0
+    </update>
+
+    <update id="setPublishStateById">
+        update dc_order_content
+        set oc_state_id=2
+        where oc_id=#{oc_id} and oc_state_id=1
+    </update>
+
+    <delete id="delById">
+        delete
+        from dc_order_content
+        where oc_id=#{oc_id}
+    </delete>
+    
+    <delete id="delByOId">
+        delete from dc_order_content
+        where oc_order_id=#{o_id}
+    </delete>
 
 </mapper>

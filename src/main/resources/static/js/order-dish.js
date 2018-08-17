@@ -18,7 +18,7 @@ var dishRecords = new Vue({
             var $element = $(e.currentTarget);
             var count = parseInt($element.parent().prev().val());
             if (count > 0)
-                $element.parent().prev().val(count - 1);
+                $elementparent().prev().val(count - 1);
         },
     }
 })
@@ -59,7 +59,12 @@ var order = {
         })
     },
     searDish: function () {
+        $('.count-input').val(0);
         var d_name = $('#search-input').val();
+        if (d_name == '') {
+            alert('请输入搜索内容~!');
+            return;
+        }
         order.getDishes(-1, d_name);
         return false;
     },
@@ -123,6 +128,10 @@ var order = {
     },
     init: function () {
 
+        //侧边导航样式
+        $('.waiter-nav-href').removeClass('active');
+        $('.waiter-nav-href').eq(0).addClass('active');
+
         //获取菜品
         order.getDishes(1);
 
@@ -130,13 +139,14 @@ var order = {
         order.getTables();
 
         //下订单
-        $('#placeOderBtn').click(function () {
+        $('#placeOrderBtn').click(function () {
             var order_flag = false;
             var totalData = {};
             totalData.o_table_id = parseInt($('#tableNo').val().trim());
             totalData.o_waiter_id = parseInt($('#waiter_id').val());
             var sum = 0;
             var listing = [];
+            $('#dish-content').html('');
             $('.count-input').each(function () {
                 var count = parseInt($(this).val());
                 if (count > 0) {
@@ -148,25 +158,33 @@ var order = {
                     param.oc_dishNo = count;
                     listing.push(param)
                     order_flag = true;
+                    $('#dish-content').append(
+                        '<tr><td>' + name + '</td><td>' + count + '</td><td>' + price + '<td></tr>'
+                    )
                 }
             })
             if (!order_flag) {
                 alert("啥都还没选呢！");
                 return;
             }
-            var time = 0;
-            var msg = "所选菜品价格一共为" + sum + ",确认下单吗?";
-            confirm(msg, function (result) {
-                if (result && time == 0) {
-                    if (order.checkTableIsUsed(totalData.o_table_id)) {
-                        totalData.orderContents = listing;
-                        order.placeOrder(totalData);
-                    }else {
-                        alert('您所选的餐桌还有人正在用餐!');
-                    }
-                }
-                time++;
-            })
+            if (order.checkTableIsUsed(totalData.o_table_id)) {
+                $('#buy-car-modal').modal('toggle');
+                totalData.orderContents = listing;
+                $('#toBuy').click(function () {
+                    console.log(1);
+                    var time = 0;
+                    var msg = "所选菜品价格一共为" + sum + ",确认下单吗?";
+                    confirm(msg, function (result) {
+                        if (result && time == 0) {
+                            order.placeOrder(totalData);
+                        }
+                        time++;
+                    })
+                })
+
+            } else {
+                alert('您所选的餐桌还有人正在用餐!');
+            }
         })
 
     }

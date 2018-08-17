@@ -18,12 +18,12 @@
         <!-- 菜单 -->
         <ul class="sidebar-nav">
             <li class="sidebar-nav-link">
-                <a href="${ctx}/waiter/orderDish.html" class="sidebar-nav-sub-title active">
+                <a href="${ctx}/waiter/orderDish.html" class="waiter-nav-href sidebar-nav-sub-title">
                     <i class="am-icon-cutlery sidebar-nav-link-logo"></i> 点餐服务
                 </a>
             </li>
             <li class="sidebar-nav-link">
-                <a href="javascript:;" class="sidebar-nav-sub-title">
+                <a href="${ctx}/waiter/payList.html" class="waiter-nav-href sidebar-nav-sub-title">
                     <i class="am-icon-dollar sidebar-nav-link-logo"></i> 结账服务
                 </a>
             </li>

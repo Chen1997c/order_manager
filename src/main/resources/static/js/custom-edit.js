@@ -86,7 +86,7 @@ var custom_edit = {
 $(function () {
     //侧边栏<a>标签调节
     $('.side-link').removeClass('sub-active');
-    $('.side-link').eq(4).addClass('sub-active');
+    $('.side-link').eq(2).addClass('sub-active');
 })
 
 //编辑信息

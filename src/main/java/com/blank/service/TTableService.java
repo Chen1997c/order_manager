@@ -36,4 +36,21 @@ public interface TTableService {
      * @return
      */
     Integer addTable(Integer table_number);
+
+    /**
+     * 删除
+     *
+     * @param table_id
+     * @return
+     */
+    Integer removeTableById(Integer table_id);
+
+    /**
+     * 修改状态信息
+     *
+     * @param dt_id
+     * @param is_used
+     * @return
+     */
+    Integer updateIsUsed(Integer dt_id, Integer is_used);
 }

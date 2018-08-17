@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * <p>
- *     功能描述:餐桌业务实现类
+ * 功能描述:餐桌业务实现类
  * </p>
  *
  * @author :Team Blank
@@ -18,6 +18,7 @@ import java.util.List;
  */
 @Service
 public class TTableServiceImpl implements TTableService {
+
 
     @Resource
     private TTableMapper tableMapper;
@@ -35,8 +36,18 @@ public class TTableServiceImpl implements TTableService {
     @Override
     public Integer addTable(Integer table_number) {
         Table table = tableMapper.queryByNumber(table_number);
-        if(table != null)
-            return null;
+        if (table != null)
+            return -1;
         return tableMapper.addTable(table_number);
+    }
+
+    @Override
+    public Integer removeTableById(Integer table_id) {
+        return tableMapper.deleteById(table_id);
+    }
+
+    @Override
+    public Integer updateIsUsed(Integer dt_id, Integer is_used) {
+        return tableMapper.updateIsUsed(dt_id, is_used);
     }
 }

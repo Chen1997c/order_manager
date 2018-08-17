@@ -127,7 +127,7 @@ var dish_edit = {
 $(function () {
     //侧边栏<a>标签调节
     $('.side-link').removeClass('sub-active');
-    $('.side-link').eq(3).addClass('sub-active');
+    $('.side-link').eq(1).addClass('sub-active');
 })
 
 //删除

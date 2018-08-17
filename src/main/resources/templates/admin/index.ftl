@@ -25,6 +25,11 @@
                         </small>
                     </div>
                     <p class="page-header-description">Powered by Team Blank</p>
+                    <p class="page-header-description">
+                        <a href="https://github.com/Chen1997c/oreder_manager" target="_blank" style="color:#fff">
+                            <i class="am-icon-github-square"></i> 访问github仓库
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -34,7 +39,7 @@
                 <div class="am-u-sm-12 am-u-md-6">
                     <div class="widget am-cf" style="height: 500px">
                         <div class="widget-head am-cf">
-                            <div class="widget-title am-fl">通知消息记录</div>
+                            <div class="widget-title am-fl">通知消息(最多保留20条)</div>
                             <div class="widget-function am-fr">
                                 <a href="javascript:;" class="am-icon-cog"></a>
                             </div>
@@ -52,17 +57,48 @@
                         </div>
                     </div>
                 </div>
-                <script src="${ctx}/js/websocket.js"></script>
                 <script>
-                    $(function () {
-                        $('#post-notice').click(function () {
-                            var message = $('#message').val().trim();
-                            if (message != '') {
-                                send(message);
-                            } else {
-                                alert("通知消息不能为空!");
+                    //发送通知
+                    $('#post-notice').click(function () {
+                        var message = $('#message').val();
+                        var account = '${current_user.u_account}';
+                        if (message == '') {
+                            alert('内容不能为空');
+                            return;
+                        }
+                        $.post({
+                            url: '${ctx}/admin/postNotice',
+                            data: {
+                                message: message,
+                                account: account
+                            },
+                            beforeSend: function () {
+                                $('#post-notice').addClass('am-disabled');
+                            },
+                            complete: function () {
+                                $('#message').val('');
+                                getNotices();
+                                $('#post-notice').removeClass('am-disabled');
                             }
                         })
+                    })
+
+                    //获取所有的
+                    function getNotices() {
+                        $.get({
+                            url: '${ctx}/admin/getNotice',
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#notice-box').html('');
+                                for(var i=0; i<data.length;i++) {
+                                    $('#notice-box').append('<div>' + data[i] + '</div>');
+                                }
+                            }
+                        })
+                    }
+
+                    $(function () {
+                        getNotices();
                     })
                 </script>
 
@@ -75,7 +111,10 @@
                             </div>
                         </div>
                         <div class="widget-body-md widget-body am-fr">
-                            <div class="am-u-sm-12 am-margin-bottom" style="border:1px solid #777;height:300px;">
+                            <div class="am-u-sm-12 am-margin-bottom am-text-sm"
+                                 style="border:1px solid #777;height:300px;">
+                                <div>#项目开始.环境搭建完毕后托管到github(v0.01)----2018.08.06</div>
+                                <div>#项目完成.合并主干与分支(vBeta1.0.0)---2018.08.17</div>
                             </div>
                         </div>
                         <script>
@@ -91,8 +130,9 @@
 <#include "/admin/custom/add.ftl">
 <script src="${ctx}/js/amazeui.min.js"></script>
 <script src="${ctx}/js/app.js"></script>
-<script src="${ctx}/js/custom-edit.js"></script>
-
+<script>
+    $('#index-bar').addClass('active');
+</script>
 </body>
 
 </html>

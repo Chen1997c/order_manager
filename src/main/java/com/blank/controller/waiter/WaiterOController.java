@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * <p>
- * 功能描述:管理员前端控制器(服务员界面)
+ * 功能描述:服务员前端控制器(点餐)
  * </p>
  *
  * @author :Team Blank
@@ -31,7 +31,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/waiter")
-public class WaiterController {
+public class WaiterOController {
 
     @Value("${waiter.dish.page.size}")
     private Integer pageSize;
@@ -100,6 +100,12 @@ public class WaiterController {
         return JsonData.jsonDataResult(result);
     }
 
+    /**
+     * 查询餐桌是否正在使用
+     *
+     * @param dt_id
+     * @return
+     */
     @GetMapping("/checkTable")
     @ResponseBody
     public Object checkTable(Integer dt_id) {

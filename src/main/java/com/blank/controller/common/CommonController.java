@@ -1,5 +1,6 @@
 package com.blank.controller.common;
 
+import com.blank.controller.BaseController;
 import com.blank.entity.User;
 import com.blank.exception.user.NullUnameUpassException;
 import com.blank.service.UUserService;
@@ -31,7 +32,7 @@ import java.io.IOException;
  * </p>
  */
 @Controller
-public class CommonController {
+public class CommonController extends BaseController {
 
     private final Logger logger = LoggerFactory.getLogger(CommonController.class);
 
@@ -66,12 +67,11 @@ public class CommonController {
     /**
      * 获得通知
      *
-     * @param session
      * @return
      */
     @RequestMapping("/getNotice")
     @ResponseBody
-    public Object getNotice(HttpSession session) {
+    public Object getNotice() {
         String notice = (String) session.getAttribute("notice");
         return notice;
     }
@@ -81,12 +81,11 @@ public class CommonController {
      *
      * @param user
      * @param verifyCode
-     * @param session
      * @return
      */
     @PostMapping(value = "/subLogin")
     @ResponseBody
-    public Object doLogin(User user, String verifyCode, HttpSession session) {
+    public Object doLogin(User user, String verifyCode) {
         String code = (String) session.getAttribute("verifyCode");
         if (verifyCode.equalsIgnoreCase(code)) {
             try {

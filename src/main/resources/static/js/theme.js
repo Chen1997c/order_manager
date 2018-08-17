@@ -26,3 +26,5 @@ function storageLoad(objectName) {
         return false
     }
 }
+
+$('#index-bar').removeClass('active');

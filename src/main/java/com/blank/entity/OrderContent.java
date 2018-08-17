@@ -1,5 +1,7 @@
 package com.blank.entity;
 
+import java.io.Serializable;
+
 /**
  * <p>
  *     功能描述:订单内容实体类
@@ -8,8 +10,9 @@ package com.blank.entity;
  * @author :Team Blank
  * @since :2018.08.14
  */
-public class OrderContent {
+public class OrderContent implements Serializable {
 
+    private static final long serialVersionUID = 3198258928719547625L;
     private Integer oc_id;
     private Integer oc_dish_id;
     private Integer oc_dishNo;

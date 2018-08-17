@@ -1,6 +1,7 @@
 package com.blank.controller.admin;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.blank.controller.BaseController;
 import com.blank.entity.Dish;
 import com.blank.service.DDishService;
 import com.blank.util.ExportDishes;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminDController {
+public class AdminDController extends BaseController {
 
     @Value("${admin.page.size}")
     private Integer pageSize;
@@ -49,7 +50,7 @@ public class AdminDController {
      * @return
      */
     @RequestMapping("/dishList.html")
-    public String showDishes(Model model, Integer current, String d_name) {
+    public String showDishes(Model model,Integer current, String d_name) {
         if (current == null || current <= 0) {
             current = 1;
         }

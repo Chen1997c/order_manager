@@ -40,15 +40,17 @@
                             </div>
                             <#list tables as table>
                             <div class="am-u-sm-6 am-u-md-4 am-u-lg-2 am-margin-bottom">
-                                <div class="am-text-sm">${table.dt_table_number}号桌:
+                                <div id="${table.dt_id}" class="table-id am-text-sm">
+                                    <span class="table-number">${table.dt_table_number}</span>号桌:
                                     <#if table.dt_isUsing == 0>
                                         (未使用)
                                     <#else >(使用中)
                                     </#if>
                                 </div>
                                 <img src="${ctx}/images/table.jpg" style="width: 100%;">
-                                <button class="am-btn am-btn-secondary am-btn-xs am-u-sm-6">删除</button>
-                                <button class="am-btn am-btn-primary am-btn-xs am-u-sm-6">修改状态</button>
+                                <button class="del-btn am-btn am-btn-secondary am-btn-xs am-u-sm-6">删除</button>
+                                <button class="edit-btn am-btn am-btn-primary am-btn-xs am-u-sm-6">修改状态</button>
+                                <input type="hidden" value="${table.dt_isUsing}">
                             </div>
                             </#list>
                             <div class="am-u-sm-6 am-u-md-4 am-u-lg-2 am-u-end am-padding-top am-text-center">

@@ -39,6 +39,7 @@
         <include refid="base_column"/>
         from dc_dish
         <include refid="where_name"/>
+        order by d_isGood desc
     </select>
 
     <select id="getAll" resultType="com.blank.entity.Dish">

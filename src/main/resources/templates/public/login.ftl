@@ -7,28 +7,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="${ctx}/css/amazeui.min.css">
+    <link rel="stylesheet" href="${ctx}/css/app.css">
     <script src="${ctx}/js/jquery-3.3.1.min.js"></script>
     <title>『点餐系统』登录</title>
     <style>
         body {
-            background:  url('${ctx}/images/login-bg.jpg')  no-repeat;
+            background: url(${ctx}/images/login-bg.jpg);
             background-size: cover;
+            background-position: center;
         }
+
         .login-box {
             left: 50%;
             width: 400px;
             height: 300px;
-            margin:150px auto;
+            margin: 150px auto;
             border-radius: 4px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(255,255,255,0.1);
         }
+
+        span {
+            color: #bbb;
+        }
+
+        input::placeholder {
+            color: #bbb!important;
+        }
+
         .login-box input {
-            background: rgba(0,0,0,0.2)!important;
-            color: #eee!important;
+            background: rgba(0, 0, 0, 0.2) !important;
+            color: #eee !important;
+            border: 0;
         }
 
         .response-msg {
-            color:red;
+            color: red;
             font-weight: bold;
         }
 
@@ -65,9 +78,13 @@
 <script>
     var path = '${ctx}';
     $(function () {
-        login.init();
+        <#if current_user??>
+            //如果已经登录 跳转到相应的url
+            login.toUrlByPosition(${current_user.u_position_id});
+            <#else>
+            login.init();
+        </#if>
     })
-
 </script>
 </body>
 

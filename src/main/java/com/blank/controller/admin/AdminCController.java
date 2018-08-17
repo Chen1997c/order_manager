@@ -1,6 +1,7 @@
 package com.blank.controller.admin;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.blank.controller.BaseController;
 import com.blank.entity.Custom;
 import com.blank.service.CCustomService;
 import com.blank.util.JsonData;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminCController {
+public class AdminCController extends BaseController {
 
     @Value("${admin.page.size}")
     private Integer pageSize;
@@ -37,7 +38,7 @@ public class AdminCController {
      * @return
      */
     @RequestMapping("/customList.html")
-    public String showDishes(Model model, Integer current, String c_name) {
+    public String showDishes(Model model,Integer current, String c_name) {
         if (current == null || current <= 0) {
             current = 1;
         }
@@ -48,7 +49,7 @@ public class AdminCController {
         }
         model.addAttribute("c_name", c_name);
         model.addAttribute("customs", customs);
-        return "/admin/customManage";
+        return "admin/customManage";
     }
 
     /**

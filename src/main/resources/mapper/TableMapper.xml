@@ -4,8 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blank.mapper.TTableMapper">
 
+    <cache type="com.blank.mapper.cache.MybatisRedisCache" />
+
     <sql id="base_column">
         dt_id,dt_table_number,dt_isUsing
+    </sql>
+
+    <sql id="update_isUsed_if">
+        <choose>
+            <when test="isUsed == 1">
+                0
+            </when>
+            <otherwise>
+                1
+            </otherwise>
+        </choose>
     </sql>
 
     <select id="queryAll" resultType="com.blank.entity.Table">
@@ -31,5 +44,23 @@
         into dc_table(dt_table_number)
         values (#{table_number})
     </insert>
+
+    <delete id="deleteById">
+        delete
+        from dc_table
+        where dt_id=#{table_id}
+    </delete>
+
+    <update id="updateIsUsed">
+        update dc_table
+        set dt_isUsing=<include refid="update_isUsed_if"/>
+        where dt_id=#{dt_id}
+    </update>
+
+    <update id="setUnUsedById">
+        update dc_table
+        set dt_isUsing=0
+        where dt_id=#{dt_id}
+    </update>
 
 </mapper>

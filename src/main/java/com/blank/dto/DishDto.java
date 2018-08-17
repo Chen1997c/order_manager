@@ -20,11 +20,12 @@ public class DishDto implements Serializable {
     private String d_img;
     private String d_isGood;
     private float d_price;
+
+    //订单中菜品数(前端发送过来的)
     private Integer count;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    //多个订单(按时间查询订单)中单个菜品的数量(返回给前端的)
+    private Integer sumCount;
 
     public Integer getD_id() {
         return d_id;
@@ -88,5 +89,17 @@ public class DishDto implements Serializable {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getSumCount() {
+        return sumCount;
+    }
+
+    public void setSumCount(Integer sumCount) {
+        this.sumCount = sumCount;
     }
 }

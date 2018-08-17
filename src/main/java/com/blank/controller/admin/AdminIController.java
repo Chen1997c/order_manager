@@ -1,5 +1,6 @@
 package com.blank.controller.admin;
 
+import com.blank.controller.BaseController;
 import com.blank.shiro.cache.RedisShiroCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * <p>
@@ -26,10 +30,10 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminIController {
+public class AdminIController extends BaseController {
 
-    //LinkedList存储通知
-    private final List<String> notices = new LinkedList<>();
+    //创建线程安全的set存储通知
+    private final ConcurrentSkipListSet<String> noticeSet = new ConcurrentSkipListSet<>();
 
 
     //通知cookie保存时长
@@ -47,7 +51,7 @@ public class AdminIController {
      */
     @RequestMapping("/index.html")
     public String index(Model model, HttpSession session) {
-        return "/admin/index";
+        return "admin/index";
     }
 
     /**
@@ -57,13 +61,16 @@ public class AdminIController {
      */
     @PostMapping("/postNotice")
     @ResponseBody
-    public void postNotice(String message, String account, HttpSession session) {
+    public void postNotice(String message, String account) {
         String notice = "(" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ")"
                 + account + ":" + message;
-        if (notices.size() >= 20)
-            notices.remove(0);
-        notices.add(notice);
-        session.setAttribute("notice",notice);
+        if (noticeSet.size() >= 20){
+            Iterator<String> iterator = noticeSet.iterator();
+            if (iterator.hasNext())
+               noticeSet.remove(iterator.next());
+        }
+        noticeSet.add(notice);
+        context.setAttribute("notice",message);
     }
 
     /**
@@ -71,10 +78,10 @@ public class AdminIController {
      *
      * @return
      */
-    @GetMapping("/getNotie")
+    @GetMapping("/getNotice")
     @ResponseBody
     public Object getNotice() {
-        return notices;
+        return noticeSet;
     }
 
 }

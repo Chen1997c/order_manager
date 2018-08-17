@@ -1,6 +1,8 @@
 package com.blank.entity;
 
 
+import java.io.Serializable;
+
 /**
  * <p>
  *     功能描述:餐桌实体类
@@ -9,8 +11,9 @@ package com.blank.entity;
  * @author :Team Blank
  * @since :2018.08.15
  */
-public class Table {
+public class Table implements Serializable {
 
+    private static final long serialVersionUID = -5499783296711351304L;
     private Integer dt_id;
     private Integer dt_table_number;
     private Integer dt_isUsing;

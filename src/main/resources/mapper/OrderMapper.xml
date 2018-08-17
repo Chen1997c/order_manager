@@ -4,6 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.blank.mapper.OOrderMapper">
 
+    <cache type="com.blank.mapper.cache.MybatisRedisCache" />
+
+    <resultMap id="info_map" type="com.blank.dto.OrderDto">
+        <id column="o_id" property="o_id"/>
+        <result column="o_beginTime" property="o_beginTime"/>
+        <result column="o_endTime" property="o_endTime"/>
+        <result column="o_state_id" property="o_state_id"/>
+        <result column="o_waiter_id" property="o_waiter_id"/>
+        <result column="o_table_id" property="o_table_id"/>
+        <collection property="orderContentDtos" ofType="com.blank.dto.OrderContentDto">
+            <result column="oc_dishNo" property="oc_dishNo"/>
+            <result column="oc_state_id" property="oc_state_id"/>
+            <result column="d_name" property="d_name"/>
+            <result column="d_price" property="d_price" />
+        </collection>
+    </resultMap>
+
     <sql id="insert_column">
         o_waiter_id,o_table_id
     </sql>
@@ -12,11 +29,62 @@
         #{o_waiter_id},#{o_table_id}
     </sql>
 
+    <sql id="info_column">
+        do.*,doc.oc_dishNo,doc.oc_dish_id,doc.oc_state_id,dd.d_name,dd.d_price
+    </sql>
+
+    <select id="getOrdersInfo" resultMap="info_map">
+        select
+        <include refid="info_column"/>
+        from dc_order do
+        left join dc_order_content doc
+        on do.o_id=doc.oc_order_id
+        left join dc_dish dd
+        on doc.oc_dish_id=dd.d_id
+        order by do.o_id desc
+    </select>
+
+    <select id="getSumRecentWeek" resultType="java.lang.Integer">
+        select
+        sum(dd.d_price*oc.oc_dishNo)
+        from dc_order o
+        left join dc_order_content oc on o.o_id=oc.oc_order_id
+        left join dc_dish dd on oc.oc_dish_id=dd.d_id
+        where DATE_SUB(CURDATE(), INTERVAL #{beforeDay} DAY) &lt;= date(o.o_endTime);
+    </select>
+
+    <select id="getHotDish" resultType="com.blank.dto.DishDto">
+        select
+        sum(oc.oc_dishNo) as sumCount,dd.d_name
+        from dc_order o
+        left join dc_order_content oc on o.o_id=oc.oc_order_id
+        left join dc_dish dd on oc.oc_dish_id=dd.d_id
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(o.o_endTime)
+        GROUP BY d_name order by sumCount desc;
+    </select>
+
     <insert id="addOrder" parameterType="com.blank.entity.Order"
-        useGeneratedKeys="true" keyProperty="o_id" keyColumn="o_id">
+            useGeneratedKeys="true" keyProperty="o_id" keyColumn="o_id">
         insert
-        into dc_order(<include refid="insert_column"/> )
-        values (<include refid="insert_value"/> )
+        into dc_order(
+        <include refid="insert_column"/>
+        )
+        values (
+        <include refid="insert_value"/>
+        )
     </insert>
+
+    <delete id="delById">
+        delete
+        from dc_order
+        where o_id=#{o_id}
+    </delete>
+
+    <update id="setPayState">
+        update dc_order
+        set o_state_id=1,o_endTime=#{endTime}
+        where o_id=#{id} and o_state_id=0
+    </update>
+
 
 </mapper>

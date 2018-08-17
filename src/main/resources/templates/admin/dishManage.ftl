@@ -83,7 +83,7 @@
                                         <td>
                                             <div class="tpl-table-black-operation">
                                                 <a class="see-dInfo" href="javascript:;"
-                                                   data-am-modal="{target: '#dish-info-modal', closeViaDimmer: 0, width: 400, height: 500}">
+                                                   data-am-modal="{target: '#dish-info-modal'}">
                                                     <i class="am-icon-search"></i> 查看
                                                 </a>
                                             </div>

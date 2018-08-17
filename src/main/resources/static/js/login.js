@@ -5,23 +5,32 @@ var login = {
             return path + '/subLogin';
         },
         cookerUrl: function () {
-            return path + '/index.html';
+            return path + '/cooker/kitchen.html';
         },
-        adminUrl: function(){
+        adminUrl: function () {
             return path + '/admin/index.html';
         },
-        waiterUrl:function(){
+        waiterUrl: function () {
             return path + '/waiter/orderDish.html';
         },
         codeImgUrl: function () {
             return path + '/VCodeImg?' + Math.random();
         }
     },
+    toUrlByPosition: function (position) {
+        if (position == 1) {
+            window.location = login.url.waiterUrl();
+        } else if (position == 2) {
+            window.location = login.url.cookerUrl();
+        } else {
+            window.location = login.url.adminUrl();
+        }
+    },
     validateWidthDB: function (u_account, u_password, verifycode) {
         $.post({
             url: login.url.subUrl(),
             dataType: 'json',
-            async:false,
+            async: false,
             data: {
                 u_account: u_account,
                 u_password: u_password,
@@ -32,13 +41,7 @@ var login = {
             },
             success: function (data) {
                 if (data.code == 1) {
-                    if(data.data.u_position_id == 1) {
-                        window.location = login.url.waiterUrl();
-                    }else if(data.data.u_position_id == 2) {
-                        window.location = login.url.cookerUrl();
-                    }else {
-                        window.location = login.url.adminUrl();
-                    }
+                    login.toUrlByPosition(data.data.u_position_id);
                 } else {
                     $('.response-msg').html(data.message);
                     if (data.code == 0) {
@@ -46,11 +49,11 @@ var login = {
                         $('#password').parent().addClass('am-form-error');
                         $('#verifycode').val('');
                         $('#verifycode').parent().addClass('am-form-error');
-                        $('#VCodeImg').attr('src',login.url.codeImgUrl());
+                        $('#VCodeImg').attr('src', login.url.codeImgUrl());
                     } else {
                         $('#verifycode').val('');
                         $('#verifycode').parent().addClass('am-form-error');
-                        $('#VCodeImg').attr('src',login.url.codeImgUrl());
+                        $('#VCodeImg').attr('src', login.url.codeImgUrl());
                     }
                 }
             },
@@ -61,15 +64,15 @@ var login = {
         return false;
     },
     init: function () {
-        $('.login-box').on('submit',function () {
+        $('.login-box').on('submit', function () {
             var u_account = $('#account').val();
             var u_password = $('#password').val();
             var verifyCode = $('#verifycode').val();
-            login.validateWidthDB(u_account,u_password,verifyCode);
+            login.validateWidthDB(u_account, u_password, verifyCode);
             return false;
         })
         $('#VCodeImg').click(function () {
-            $(this).attr('src',  login.url.codeImgUrl());
+            $(this).attr('src', login.url.codeImgUrl());
         })
     }
 }

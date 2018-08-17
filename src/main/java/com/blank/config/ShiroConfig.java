@@ -1,17 +1,11 @@
 package com.blank.config;
 
-import com.blank.shiro.*;
-import com.blank.shiro.cache.RedisShiroCache;
+
 import com.blank.shiro.cache.ShiroCacheManager;
 import com.blank.shiro.realm.UserRealm;
-import com.blank.shiro.session.CustomSessionManager;
 import com.blank.shiro.session.RedisSessionDao;
-import org.apache.shiro.authc.Authenticator;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -39,7 +33,7 @@ public class ShiroConfig {
     @Bean
     public UserRealm userRealm() {
         UserRealm userRealm = new UserRealm();
-//        customRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return userRealm;
     }
 
@@ -116,9 +110,10 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         shiroFilterFactoryBean.setLoginUrl("/login.html");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/500.html");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/error/401.html");
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //以下是过滤链，按顺序过滤
+        filterChainDefinitionMap.put("/error/**","anon");
         filterChainDefinitionMap.put("/login.html","anon");
         filterChainDefinitionMap.put("/css/**","anon");
         filterChainDefinitionMap.put("/images/**","anon");
@@ -128,6 +123,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/subLogin","anon");
         filterChainDefinitionMap.put("/admin/**","roles[admin]");
         filterChainDefinitionMap.put("/waiter/**","roles[waiter]");
+        filterChainDefinitionMap.put("/cooker/**","roles[cooker]");
         filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

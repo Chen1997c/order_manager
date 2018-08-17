@@ -4,7 +4,7 @@
 <head>
     <#include "/public/common/head.ftl" >
     <!--  -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="${ctx}/js/vue.min.js"></script>
     <title>『点餐系统』点餐服务</title>
 </head>
 
@@ -54,7 +54,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="am-u-md-4" style="height:350px" v-for="dish in records">
+                            <div class="am-u-sm-6 am-u-md-4 am-u-lg-3" style="height:350px" v-for="dish in records">
                                 <input type="hidden" :value="dish.d_id">
                                 <div class="waiter-img am-u-sm-12">
                                     <span v-if=" dish.d_img === null ">
@@ -68,7 +68,7 @@
                                     </div>
                                     <div class="am-padding-left am-padding-right">{{dish.d_description}}</div>
                                     <div class="am-text-center am-text-xl am-text-warning">
-                                        <strong>$<span id="price">{{dish.d_price}}</span></strong>
+                                        <strong>￥<span id="price">{{dish.d_price}}</span></strong>
                                     </div>
                                 </div>
                                 <div class="waiter-count am-margin-top am-u-sm-12">
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                             <div class="am-u-lg-12 am-margin-bottom-xl">
-                                <button id="placeOderBtn" class="am-btn am-btn-danger am-u-sm-6 am-u-sm-offset-3">确认订单
+                                <button id="placeOrderBtn" class="am-btn am-btn-danger am-u-sm-6 am-u-sm-offset-3">确认订单
                                 </button>
                             </div>
                         </div>
@@ -105,6 +105,7 @@
     </div>
 </div>
 </div>
+<#include "/waiter/order/buyCar.ftl">
 <script src="${ctx}/js/amazeui.min.js"></script>
 <script src="${ctx}/js/app.js"></script>
 <script src="${ctx}/js/order-dish.js"></script>

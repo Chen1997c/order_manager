@@ -1,5 +1,6 @@
 package com.blank.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,8 +11,9 @@ import java.util.Date;
  * @author :Team Blank
  * @since :2018.08.14
  */
-public class Order {
+public class Order implements Serializable {
 
+    private static final long serialVersionUID = 5099395610384259440L;
     private Integer o_id;
     private Date o_beginTime;
     private Date o_endTime;

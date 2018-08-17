@@ -4,7 +4,7 @@
         top: 0;
         left: 0;
         width: 0;
-        height: 2px;
+        height: 3px;
         background: deepskyblue;
         z-index: 9999999999999999999;
     }

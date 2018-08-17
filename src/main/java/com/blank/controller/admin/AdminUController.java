@@ -1,6 +1,7 @@
 package com.blank.controller.admin;
 
 import com.baomidou.mybatisplus.plugins.Page;
+import com.blank.controller.BaseController;
 import com.blank.dto.UserDto;
 import com.blank.entity.User;
 import com.blank.service.UUserService;
@@ -28,7 +29,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminUController {
+public class AdminUController extends BaseController {
 
     @Value("${admin.page.size}")
     private Integer pageSize;
@@ -111,7 +112,7 @@ public class AdminUController {
             Integer result = userService.updateAvatar("/user_img/" + fileName, id);
             if (result != null)
                 return JsonData.buidSuccess(1, EditEnum.SUCCESS.getStateInfo());
-            return JsonData.bulidError(0,EditEnum.FAIL.getStateInfo());
+            return JsonData.bulidError(0, EditEnum.FAIL.getStateInfo());
         } catch (IOException e) {
             e.printStackTrace();
         }
