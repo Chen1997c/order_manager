@@ -1,7 +1,8 @@
-# order_sys-springboot
+# description 
+# An order-system that I hava to program it .
 
-Springboot+MybatisPuls+Shiro+MySQL+freemarker+redis+vue(一个界面)+amazeUI
+Framework tags:Springboot MybatisPuls Shiro freemarker AmazeUI vue(only one view)
+Datebase: mysql v5.6
+Cache: redis
 
-订餐系统小项目
 
-目前所学的知识点的一个总结。
