@@ -7,5 +7,4 @@ Datebase: mysql v5.6
 
 Cache: redis
 
-Option: This is complete garbage= =
-
+Option: None..
